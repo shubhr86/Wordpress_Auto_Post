@@ -196,6 +196,10 @@ def upload_to_wordpress(title, content, image_url):
 
 # Main Execution
 articles = fetch_rss_articles()
+if not articles:
+    print("🚫 No new articles found.")
+    exit(0)
+
 for article in articles:
     original_title = article.get('title', '').strip()
     original_content = article.get('content', '').strip()
@@ -215,6 +219,8 @@ for article in articles:
     
     if upload_to_wordpress(rephrased_title, seo_article, image_url):
         print(f"✅ Successfully posted: {rephrased_title}\n")
-        break  # ✅ Stops the loop after posting the first article
+        break  # ✅ Stops after posting one article
 
-print("✅ Script completed. Exiting.")
+print("✅ Script execution completed. Exiting.")
+exit(0)
+
