@@ -18,10 +18,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' # Set your Python version
+          python-version: '3.13.1' # Set your Python version
 
       - name: Install Dependencies
-        run: pip install -r requirements.txt  # If you have dependencies
+        run: pip install -r $GITHUB_WORKSPACE/requirements.txt
+
 
       - name: Run Script
         env:
