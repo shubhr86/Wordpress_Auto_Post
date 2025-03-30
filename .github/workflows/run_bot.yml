@@ -1,0 +1,34 @@
+name: Run WordPress Auto-Poster
+
+on:
+  schedule:
+    - cron: '30 4 * * *'  # Runs at 10:00 AM IST
+    - cron: '30 8 * * *'  # Runs at 2:00 PM IST
+    - cron: '30 11 * * *' # Runs at 5:00 PM IST
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # Set your Python version
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt  # If you have dependencies
+
+      - name: Run Script
+        env:
+          RSS_FEED_URL: ${{ secrets.RSS_FEED_URL }}
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_PASS: ${{ secrets.WP_PASS }}
+          SERP_API_KEY: ${{ secrets.SERP_API_KEY }}
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
+        run: python t.py
