@@ -196,17 +196,15 @@ def upload_to_wordpress(title, content, image_url):
 
 # Main Execution
 articles = fetch_rss_articles()
-if not articles:
-    print("🚫 No new articles found.")
-    exit(0)
-
-for article in articles:
+if articles:  # Ensure there's at least one article
+    article = articles[0]  # Take only the first article
+    
     original_title = article.get('title', '').strip()
     original_content = article.get('content', '').strip()
 
     if not original_title or not original_content:
         print("🚫 Skipping empty or malformed article.")
-        continue
+        exit(0)  # Exit after skipping
 
     print(f"\n🚀 Processing: {original_title}")
 
@@ -217,10 +215,10 @@ for article in articles:
     # Search for image
     image_url = search_image(rephrased_title)
     
-    if upload_to_wordpress(rephrased_title, seo_article, image_url):
+    if not upload_to_wordpress(rephrased_title, seo_article, image_url):
+        print(f"🚫 Skipped article: {rephrased_title}")
+    else:
         print(f"✅ Successfully posted: {rephrased_title}\n")
-        break  # ✅ Stops after posting one article
 
-print("✅ Script execution completed. Exiting.")
-exit(0)
+exit(0)  # Ensure script exits after posting one article
 
