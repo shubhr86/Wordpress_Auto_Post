@@ -12,6 +12,7 @@ import random
 import os
 import html
 import re
+import sys
 # Constants
 RSS_FEED_URL = os.getenv("RSS_FEED_URL")
 WP_URL = os.getenv("WP_URL")
@@ -192,6 +193,7 @@ def upload_to_wordpress(title, content, image_url):
     print(f"✅ Posted: {title}")
     return True
 
+
 # Main Execution
 articles = fetch_rss_articles()
 for article in articles:
@@ -211,7 +213,8 @@ for article in articles:
     # Search for image
     image_url = search_image(rephrased_title)
     
-    if not upload_to_wordpress(rephrased_title, seo_article, image_url):
-        print(f"🚫 Skipped article: {rephrased_title}")
-    else:
+    if upload_to_wordpress(rephrased_title, seo_article, image_url):
         print(f"✅ Successfully posted: {rephrased_title}\n")
+        break  # ✅ Stops the loop after posting the first article
+
+print("✅ Script completed. Exiting.")
